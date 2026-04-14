@@ -1,0 +1,239 @@
+@import "tailwindcss";
+
+/**
+ * DOBAR design system — Tailwind v4 theme configuration
+ *
+ * In Tailwind v4, @theme replaces tailwind.config.ts for design tokens.
+ * Every CSS custom property here generates one or more Tailwind utility classes.
+ *
+ *   --color-*   → bg-*, text-*, border-*, ring-*, fill-*, stroke-*
+ *   --font-*    → font-* (font-family)
+ *   --text-*    → text-* (font-size, with optional line-height modifier)
+ *   --leading-* → leading-* (line-height)
+ *   --radius-*  → rounded-* (border-radius)
+ *   --shadow-*  → shadow-* (box-shadow)
+ *
+ * Source of truth for raw values: lib/tokens.ts
+ * Figma file: dobar.system--Copy-
+ */
+@theme {
+  /* ────────────────────────────────────────────────────────────────────────
+   * FONTS
+   * Figma: typography/font-family/*
+   *
+   * --font-sans   → font-sans   (primary typeface — Helvetica Now Display)
+   * --font-dobar  → font-dobar  (DOBAR logotype — Sora ExtraBold)
+   * --font-geist  → font-geist  (code / UI fallback — Geist)
+   *
+   * Note: --font-sora and --font-geist-sans are CSS variables injected by
+   * Next.js font loader (see layout.tsx). They are referenced here, not redefined.
+   * ──────────────────────────────────────────────────────────────────────── */
+  --font-sans: "Helvetica Now Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-dobar: var(--font-sora, "Sora"), "Sora", sans-serif;
+  --font-geist: var(--font-geist-sans, "Geist"), "Geist", ui-sans-serif, sans-serif;
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * COLORS — Background
+   * Figma: color/background/*
+   *
+   * bg-background-subtle   bg-background-default
+   * bg-background-inverse  bg-background-brand
+   * ──────────────────────────────────────────────────────────────────────── */
+  --color-background-subtle:  #f7f6f5;
+  --color-background-default: #ffffff;
+  --color-background-inverse: #110f10;
+  --color-background-brand:   #f7f2ec;
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * COLORS — Text
+   * Figma: color/text/*
+   *
+   * text-text-primary   text-text-secondary   text-text-muted
+   * ──────────────────────────────────────────────────────────────────────── */
+  --color-text-primary:   #110f10;
+  --color-text-secondary: #4b4846;
+  --color-text-muted:     #8c8885;
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * COLORS — Border
+   * Figma: color/border/*
+   *
+   * border-border-subtle   border-border-strong
+   * border-border-brand    border-border-focus
+   * ──────────────────────────────────────────────────────────────────────── */
+  --color-border-subtle: #efedec;
+  --color-border-strong: #c9c5c2;
+  --color-border-brand:  #c2986b;
+  --color-border-focus:  #b0865e;
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * COLORS — Button / Primary
+   * Figma: color/button/primary/*
+   * ──────────────────────────────────────────────────────────────────────── */
+  --color-button-primary-bg:            #c2986b;
+  --color-button-primary-text:          #ffffff;
+  --color-button-primary-text-disabled: #8c8885;
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * COLORS — Button / Outlined
+   * Figma: color/button/outline/*
+   * ──────────────────────────────────────────────────────────────────────── */
+  --color-button-outline-border:          #a8a29e;
+  --color-button-outline-border-disabled: rgba(0, 0, 0, 0.1);
+  --color-button-outline-text:            #000000;
+  --color-button-outline-text-disabled:   #8c8885;
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * COLORS — Interaction states
+   * Figma: color/interaction/*
+   *
+   * bg-interaction-hover       bg-interaction-pressed
+   * border-interaction-focus-ring
+   * ──────────────────────────────────────────────────────────────────────── */
+  --color-interaction-hover:      rgba(0, 0, 0, 0.05);
+  --color-interaction-pressed:    rgba(0, 0, 0, 0.2);
+  --color-interaction-focus-ring: #c9a274;
+  --color-interaction-disabled:   rgba(0, 0, 0, 0.1);
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * COLORS — Alpha
+   * Figma: color/alpha/black/*
+   * ──────────────────────────────────────────────────────────────────────── */
+  --color-alpha-black-5:  rgba(0, 0, 0, 0.05);
+  --color-alpha-black-10: rgba(0, 0, 0, 0.1);
+  --color-alpha-black-20: rgba(0, 0, 0, 0.2);
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * COLORS — Feedback / Alerts
+   * Figma: color/feedback/*
+   *
+   * bg-feedback-info-100     border-feedback-info-300
+   * bg-feedback-error-100    border-feedback-error-300
+   * bg-feedback-warning-100  border-feedback-warning-300
+   * bg-feedback-success-100  border-feedback-success-300
+   * ──────────────────────────────────────────────────────────────────────── */
+  --color-feedback-info-100:     #eff6ff;
+  --color-feedback-info-300:     #bcdbff;
+  --color-feedback-error-100:    #fee2e2;
+  --color-feedback-error-300:    #fca5a5;
+  --color-feedback-warning-100:  #fef3c7;
+  --color-feedback-warning-300:  #fcd34d;
+  --color-feedback-success-100:  #d1fae5;
+  --color-feedback-success-300:  #6ee7b7;
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * COLORS — DOBAR brand
+   *
+   * text-dobar-orange → "DO" in DOBAR logotype
+   * ──────────────────────────────────────────────────────────────────────── */
+  --color-dobar-orange: #f9a271;
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * TYPOGRAPHY — Font sizes
+   * Figma: typography/font-size/*
+   *
+   * Each --text-{name} generates a text-{name} Tailwind utility.
+   * The --text-{name}--line-height companion sets the default line-height
+   * for that size (Tailwind v4 compound property syntax).
+   *
+   * Usage: <h1 className="text-h1 font-sans font-medium leading-headline">
+   * ──────────────────────────────────────────────────────────────────────── */
+
+  /* Display — used for marketing/hero copy */
+  --text-display-xl: 80px;
+  --text-display-xl--line-height: 1.2;
+
+  --text-display-l: 64px;
+  --text-display-l--line-height: 1.2;
+
+  --text-display-m: 48px;
+  --text-display-m--line-height: 1.2;
+
+  /* Headlines — h1–h6 */
+  --text-h1: 32px;
+  --text-h1--line-height: 1.3;
+
+  --text-h2: 28px;
+  --text-h2--line-height: 1.3;
+
+  --text-h3: 24px;
+  --text-h3--line-height: 1.3;
+
+  --text-h4: 20px;
+  --text-h4--line-height: 1.3;
+
+  --text-h5: 18px;
+  --text-h5--line-height: 1.3;
+
+  --text-h6: 16px;
+  --text-h6--line-height: 1.3;
+
+  /* Paragraphs — body copy */
+  --text-paragraph-xl: 18px;
+  --text-paragraph-xl--line-height: 1.5;
+
+  --text-paragraph-m: 16px;
+  --text-paragraph-m--line-height: 1.5;
+
+  --text-paragraph-s: 14px;
+  --text-paragraph-s--line-height: 1.5;
+
+  /* Labels — UI labels, buttons, small caps */
+  --text-label-xl: 14px;
+  --text-label-xl--line-height: 1.2;
+
+  --text-label-m: 13px;
+  --text-label-m--line-height: 1.2;
+
+  --text-label-s: 12px;
+  --text-label-s--line-height: 1.2;
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * TYPOGRAPHY — Named line heights
+   * Figma: typography/line-height/*
+   *
+   * leading-display   → 1.2 (display sizes and labels)
+   * leading-headline  → 1.3 (h1–h6)
+   * leading-paragraph → 1.5 (paragraphs — same as Tailwind's leading-normal)
+   * leading-label     → 1.2 (labels)
+   * ──────────────────────────────────────────────────────────────────────── */
+  --leading-display:   1.2;
+  --leading-headline:  1.3;
+  --leading-paragraph: 1.5;
+  --leading-label:     1.2;
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * BORDER RADIUS
+   * Figma: radius/* and spacing/* (when used as border-radius)
+   *
+   * rounded-alert  → 8px    (Figma: radius/8)
+   * rounded-card   → 24px   (Figma: spacing/24 used as border-radius)
+   * rounded-pill   → 9999px (Figma: radius/9999)
+   *
+   * Tailwind default aliases that map to the same values:
+   *   rounded-lg   = 8px    rounded-3xl = 24px    rounded-full = 9999px
+   * ──────────────────────────────────────────────────────────────────────── */
+  --radius-alert: 8px;
+  --radius-card:  24px;
+  --radius-pill:  9999px;
+
+  /* ────────────────────────────────────────────────────────────────────────
+   * SHADOWS
+   *
+   * shadow-input-active → M3/Elevation Light/1 (active InputBox state)
+   * ──────────────────────────────────────────────────────────────────────── */
+  --shadow-input-active:
+    0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+    0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────────
+ * Base styles
+ * ────────────────────────────────────────────────────────────────────────────── */
+body {
+  background-color: var(--color-background-subtle);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

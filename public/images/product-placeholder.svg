@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="520" viewBox="0 0 400 520">
+  <!-- Background -->
+  <rect width="400" height="520" fill="#f2ede8" rx="16"/>
+
+  <!-- Soft inner glow -->
+  <ellipse cx="200" cy="260" rx="160" ry="200" fill="#e8ddd4" opacity="0.5"/>
+
+  <!-- Jar body -->
+  <rect x="130" y="210" width="140" height="120" rx="12" fill="#d4c4b0"/>
+  <!-- Jar lid -->
+  <rect x="118" y="188" width="164" height="36" rx="18" fill="#c2986b"/>
+  <!-- Lid highlight -->
+  <rect x="135" y="194" width="130" height="6" rx="3" fill="#d4af87" opacity="0.6"/>
+
+  <!-- Label area on jar -->
+  <rect x="142" y="228" width="116" height="80" rx="6" fill="#ede5db"/>
+  <!-- Brand mark on label -->
+  <!-- Hexagon (honeycomb) shape -->
+  <polygon points="200,243 211,249 211,261 200,267 189,261 189,249" fill="none" stroke="#c2986b" stroke-width="2"/>
+  <!-- Leaf accent -->
+  <path d="M200 252 C200 252 208 256 200 264 C192 256 200 252 200 252Z" fill="#c2986b" opacity="0.6"/>
+  <!-- Label text lines -->
+  <rect x="160" y="272" width="80" height="5" rx="2.5" fill="#a89280" opacity="0.4"/>
+  <rect x="170" y="282" width="60" height="4" rx="2" fill="#a89280" opacity="0.3"/>
+  <rect x="175" y="291" width="50" height="4" rx="2" fill="#a89280" opacity="0.2"/>
+
+  <!-- Decorative dots (natural/organic feel) -->
+  <circle cx="110" cy="160" r="5" fill="#c2986b" opacity="0.2"/>
+  <circle cx="290" cy="380" r="7" fill="#c2986b" opacity="0.15"/>
+  <circle cx="80" cy="360" r="4" fill="#c2986b" opacity="0.2"/>
+  <circle cx="320" cy="160" r="6" fill="#c2986b" opacity="0.15"/>
+
+  <!-- Small leaf accent top-left -->
+  <path d="M78 120 C78 120 88 106 102 114 C96 126 78 120 78 120Z" fill="#c2986b" opacity="0.25"/>
+  <line x1="78" y1="120" x2="102" y2="114" stroke="#c2986b" stroke-width="1" opacity="0.2"/>
+
+  <!-- Small leaf accent bottom-right -->
+  <path d="M322 400 C322 400 332 386 346 394 C340 406 322 400 322 400Z" fill="#c2986b" opacity="0.25"/>
+  <line x1="322" y1="400" x2="346" y2="394" stroke="#c2986b" stroke-width="1" opacity="0.2"/>
+</svg>
