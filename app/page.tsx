@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Leaf, HelpCircle, Lightbulb } from "lucide-react"
 import { Navbar } from "@/components/Navbar"
@@ -13,6 +13,7 @@ import { QuestionCard } from "@/components/ui/QuestionCard"
 import { ProductCard } from "@/components/ui/ProductCard"
 import { type BadgeType } from "@/components/ui/ProductCard"
 import { type Lang } from "@/components/ui/LanguagePicker"
+import { DEFAULT_LANG, getSavedLang, saveLang } from "@/lib/language"
 import { PRODUCTS } from "@/lib/products"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -109,7 +110,7 @@ export default function Homepage() {
   const router = useRouter()
 
   // ── State
-  const [lang, setLang]               = useState<Lang>("en")
+  const [lang, setLang]               = useState<Lang>(DEFAULT_LANG)
   const [question, setQuestion]       = useState("")
   const [aiResponse, setAiResponse]   = useState<AIResponseData | null>(null)
   const [isLoading, setIsLoading]     = useState(false)
@@ -117,6 +118,14 @@ export default function Homepage() {
   const [error, setError]             = useState(false)
 
   const t = (key: keyof typeof COPY) => COPY[key][lang]
+
+  // ── Language persistence
+  useEffect(() => { setLang(getSavedLang()) }, [])
+
+  const handleLangChange = (newLang: Lang) => {
+    setLang(newLang)
+    saveLang(newLang)
+  }
 
   // ── Handlers
 
@@ -160,7 +169,7 @@ export default function Homepage() {
     <div className="flex flex-col min-h-screen bg-background-subtle">
 
       {/* ── Navbar ─────────────────────────────────────────────────────── */}
-      <Navbar lang={lang} onLangChange={setLang} />
+      <Navbar lang={lang} onLangChange={handleLangChange} />
 
       {/* ── Main ───────────────────────────────────────────────────────── */}
       <main className="flex-1 flex flex-col items-center px-5 md:px-10 py-16 md:py-[100px]">
@@ -298,6 +307,7 @@ export default function Homepage() {
                             highlights={product.ingredients}
                             href={product.url}
                             reverse={imageReverse(index)}
+                            lang={lang}
                           />
                         </div>
                       ))}

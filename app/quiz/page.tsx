@@ -13,6 +13,7 @@ import { QuizAnswerCard } from "@/components/ui/QuizAnswerCard"
 import { LoadingIndicator } from "@/components/ui/LoadingIndicator"
 import { Alert } from "@/components/ui/Alert"
 import { type Lang } from "@/components/ui/LanguagePicker"
+import { DEFAULT_LANG, getSavedLang, saveLang } from "@/lib/language"
 import { QUIZ_QUESTIONS, type QuizAnswers } from "@/lib/quiz-questions"
 import type { Product } from "@/lib/products"
 
@@ -560,7 +561,7 @@ function ResultsPage({
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function QuizPage() {
-  const [lang, setLang]               = useState<Lang>("en")
+  const [lang, setLang]               = useState<Lang>(DEFAULT_LANG)
   const [currentStep, setCurrentStep] = useState(0)
   const [answers, setAnswers]         = useState<QuizAnswers>({})
   const [isLoading, setIsLoading]     = useState(false)
@@ -575,6 +576,14 @@ export default function QuizPage() {
   const canGoNext      = !!selectedAnswer
 
   const t = (key: keyof typeof COPY) => COPY[key][lang]
+
+  // ── Language persistence
+  useEffect(() => { setLang(getSavedLang()) }, [])
+
+  const handleLangChange = (newLang: Lang) => {
+    setLang(newLang)
+    saveLang(newLang)
+  }
 
   // ── Cycle loading phases while API is pending ──────────────────────────────
   useEffect(() => {
@@ -638,7 +647,7 @@ export default function QuizPage() {
   if (result && !isLoading) {
     return (
       <div className="flex flex-col min-h-screen bg-background-subtle">
-        <Navbar lang={lang} onLangChange={setLang} />
+        <Navbar lang={lang} onLangChange={handleLangChange} />
         <ResultsPage
           result={result}
           lang={lang}
@@ -653,7 +662,7 @@ export default function QuizPage() {
   // ── Quiz flow ─────────────────────────────────────────────────────────────
   return (
     <div className="flex flex-col min-h-screen bg-background-subtle">
-      <Navbar lang={lang} onLangChange={setLang} />
+      <Navbar lang={lang} onLangChange={handleLangChange} />
 
       <main className="flex-1 flex flex-col items-center px-5 md:px-10 py-16 md:py-[100px]">
         <div className="w-full max-w-[748px] flex flex-col gap-8">

@@ -4,6 +4,7 @@ import { useState } from "react"
 import Image from "next/image"
 import { CheckCircle2, Star, Sparkles, ExternalLink } from "lucide-react"
 import { Button } from "./Button"
+import type { Lang } from "@/lib/language"
 
 // ─── Badge types ──────────────────────────────────────────────────────────────
 
@@ -58,6 +59,7 @@ export interface ProductCardProps {
   highlights?: string[]
   href?: string
   reverse?: boolean
+  lang?: Lang
   className?: string
 }
 
@@ -81,6 +83,7 @@ export function ProductCard({
   highlights = [],
   href,
   reverse = false,
+  lang = "sr",
   className,
 }: ProductCardProps) {
   const [imgSrc, setImgSrc] = useState(image)
@@ -157,7 +160,7 @@ export function ProductCard({
             className="w-full md:w-auto"
             {...(href ? { onClick: () => window.open(href, "_blank") } : {})}
           >
-            Learn more
+            {lang === "sr" ? "Saznaj više" : "Learn more"}
           </Button>
         </div>
       </div>
