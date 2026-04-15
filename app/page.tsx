@@ -15,6 +15,7 @@ import { type BadgeType } from "@/components/ui/ProductCard"
 import { type Lang } from "@/components/ui/LanguagePicker"
 import { DEFAULT_LANG, getSavedLang, saveLang } from "@/lib/language"
 import { PRODUCTS } from "@/lib/products"
+import { track } from "@/lib/analytics"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -131,7 +132,11 @@ export default function Homepage() {
 
   async function handleSend(value: string) {
     if (!value.trim()) return
-    console.log("TRACK: chat_question_submitted", { questionLength: value.length, lang })
+    track("chat_question_submitted", {
+      lang,
+      question_length: value.length,
+      question_preview: value.slice(0, 50),
+    })
     setQuestion(value)
     setHasSubmitted(true)
     setIsLoading(true)
@@ -149,8 +154,13 @@ export default function Homepage() {
 
       const data: AIResponseData = await res.json()
       setAiResponse(data)
+      track("chat_response_received", {
+        lang,
+        products_count: data.products?.length ?? 0,
+      })
     } catch {
       setError(true)
+      track("chat_error", { lang, error: "api_failed" })
     } finally {
       setIsLoading(false)
     }
@@ -210,7 +220,7 @@ export default function Homepage() {
                   variant="outlined"
                   size="default"
                   iconLeft={<HelpCircle size={16} aria-hidden="true" />}
-                  onClick={() => router.push("/quiz")}
+                  onClick={() => { track("quiz_chip_clicked", { source: "homepage", lang }); router.push("/quiz") }}
                   className="w-full md:w-auto md:self-start"
                 >
                   {t("quizChip")}
@@ -232,6 +242,7 @@ export default function Homepage() {
                     href="https://beescare.rs"
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => track("online_store_clicked", { source: "chat", lang })}
                     className="text-label-xl font-sans font-medium leading-label text-text-primary underline decoration-solid hover:text-text-secondary transition-colors duration-150"
                   >
                     {t("visitSite")}
@@ -296,7 +307,12 @@ export default function Homepage() {
                         // ProductCard handles "Learn more" navigation internally.
                         <div
                           key={`${product.name}-${index}`}
-                          onClick={() => console.log("TRACK: product_link_clicked", { productName: product.name, source: "chat", lang })}
+                          onClick={() => track("product_clicked", {
+                            product_name: product.name,
+                            product_id: product.id,
+                            source: "chat",
+                            lang,
+                          })}
                         >
                           <ProductCard
                             badge={BADGE_MAP[product.badge] ?? "best-match"}
@@ -350,7 +366,7 @@ export default function Homepage() {
                     variant="outlined"
                     size="default"
                     iconLeft={<HelpCircle size={16} aria-hidden="true" />}
-                    onClick={() => router.push("/quiz")}
+                    onClick={() => { track("quiz_chip_clicked", { source: "chat", lang }); router.push("/quiz") }}
                     className="w-full md:w-auto md:self-start"
                   >
                     {t("quizChip")}

@@ -14,6 +14,7 @@ import { LoadingIndicator } from "@/components/ui/LoadingIndicator"
 import { Alert } from "@/components/ui/Alert"
 import { type Lang } from "@/components/ui/LanguagePicker"
 import { DEFAULT_LANG, getSavedLang, saveLang } from "@/lib/language"
+import { track } from "@/lib/analytics"
 import { QUIZ_QUESTIONS, type QuizAnswers } from "@/lib/quiz-questions"
 import type { Product } from "@/lib/products"
 
@@ -245,7 +246,7 @@ function RoutineStepRow({
             target="_blank"
             rel="noopener noreferrer"
             className="text-label-m font-sans font-medium leading-label text-border-brand no-underline hover:underline underline-offset-2 transition-colors duration-150 self-start"
-            onClick={() => console.log("TRACK: product_link_clicked", { productName: name, source: "quiz", lang })}
+            onClick={() => track("product_clicked", { product_name: name, source: "quiz", lang })}
           >
             {name}
           </a>
@@ -507,7 +508,7 @@ function ResultsPage({
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-paragraph-m font-sans leading-paragraph text-border-brand no-underline hover:underline underline-offset-2 transition-colors duration-150 group self-start"
-                    onClick={() => console.log("TRACK: product_link_clicked", { productName: lang === "sr" ? product.nameSr : product.nameEn, source: "quiz", lang })}
+                    onClick={() => track("product_clicked", { product_name: lang === "sr" ? product.nameSr : product.nameEn, source: "quiz", lang })}
                   >
                     <span>{lang === "sr" ? product.nameSr : product.nameEn}</span>
                     <ArrowRight
@@ -537,7 +538,11 @@ function ResultsPage({
               size="default"
               iconLeft={<ExternalLink size={16} aria-hidden="true" />}
               className="w-full md:w-auto"
-              onClick={() => window.open("https://beescare.rs/proizvodi/", "_blank")}
+              onClick={() => {
+                track("view_products_clicked", { source: "quiz", lang })
+                track("online_store_clicked", { source: "quiz", lang })
+                window.open("https://beescare.rs/proizvodi/", "_blank")
+              }}
             >
               {t("viewProducts")}
             </Button>
@@ -603,8 +608,14 @@ export default function QuizPage() {
   function handleSelect(value: string) {
     // Fire quiz_started exactly once — when the very first answer is chosen
     if (Object.keys(answers).length === 0 && !answers[question.id]) {
-      console.log("TRACK: quiz_started", { lang })
+      track("quiz_started", { lang })
     }
+    track("quiz_question_answered", {
+      question_id: question.id,
+      question_number: currentStep + 1,
+      answer: value,
+      lang,
+    })
     setAnswers(prev => ({ ...prev, [question.id]: value }))
   }
 
@@ -616,7 +627,7 @@ export default function QuizPage() {
     if (!canGoNext) return
     if (currentStep < totalSteps - 1) { setCurrentStep(s => s + 1); return }
 
-    console.log("TRACK: quiz_completed", { answers, lang })
+    track("quiz_submitted", { lang, answers })
     setIsLoading(true)
     setError(false)
     try {
@@ -628,8 +639,15 @@ export default function QuizPage() {
       if (!res.ok) throw new Error("API error")
       const data: QuizApiResult = await res.json()
       setResult(data)
+      track("quiz_completed", {
+        lang,
+        skin_type: answers.skin_type,
+        primary_concern: answers.primary_concern,
+        products_count: data.recommendations?.primaryProducts?.length ?? 0,
+      })
     } catch {
       setError(true)
+      track("quiz_error", { lang, error: "api_failed" })
     } finally {
       setIsLoading(false)
     }
