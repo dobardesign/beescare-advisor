@@ -1,6 +1,8 @@
 import posthog from "posthog-js"
 
-const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY || ""
+const POSTHOG_KEY =
+  process.env.NEXT_PUBLIC_POSTHOG_KEY ||
+  "phc_AyK57fosfZBJvLeN5H4cvLzqR9Hyt7DdPQQNkw8FH6dh"
 
 export function initAnalytics() {
   if (typeof window === "undefined") return
