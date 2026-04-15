@@ -4,6 +4,7 @@
 
 export interface QuestionCardProps {
   question: string
+  lang?: "sr" | "en"
   /** Kept for API compatibility but no longer renders an edit button. */
   onEdit?: () => void
   className?: string
@@ -26,7 +27,7 @@ export interface QuestionCardProps {
  *   "Your question"  label-s / medium / text-secondary
  *   body             paragraph-m / regular / text-secondary / leading 1.5
  */
-export function QuestionCard({ question, className }: QuestionCardProps) {
+export function QuestionCard({ question, lang = "sr", className }: QuestionCardProps) {
   return (
     <div
       className={[
@@ -40,7 +41,7 @@ export function QuestionCard({ question, className }: QuestionCardProps) {
     >
       {/* ── Label ─────────────────────────────────────────────────────── */}
       <span className="text-label-s font-sans font-medium leading-label text-text-secondary whitespace-nowrap">
-        Your question
+        {lang === "sr" ? "Tvoje pitanje" : "Your question"}
       </span>
 
       {/* ── Divider ───────────────────────────────────────────────────── */}

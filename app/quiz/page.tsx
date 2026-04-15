@@ -16,6 +16,7 @@ import { type Lang } from "@/components/ui/LanguagePicker"
 import { DEFAULT_LANG, getSavedLang, saveLang } from "@/lib/language"
 import { track } from "@/lib/analytics"
 import { QUIZ_QUESTIONS, type QuizAnswers } from "@/lib/quiz-questions"
+import { WhereToBuy } from "@/components/ui/WhereToBuy"
 import type { Product } from "@/lib/products"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -524,10 +525,20 @@ function ResultsPage({
         </section>
       )}
 
-      {/* ── SECTION 7 ─ Disclaimer + CTA ────────────────────────────── */}
+      {/* ── SECTION 7 ─ Where to buy ─────────────────────────────────── */}
+      <section
+        className="bg-background-subtle border-b border-border-subtle"
+        style={anim(700)}
+      >
+        <div className="max-w-[748px] mx-auto px-5 md:px-10 py-8 md:py-12">
+          <WhereToBuy lang={lang} source="quiz" />
+        </div>
+      </section>
+
+      {/* ── SECTION 8 ─ Disclaimer + CTA ────────────────────────────── */}
       <section
         className="bg-background-subtle"
-        style={anim(720)}
+        style={anim(800)}
       >
         <div className="max-w-[748px] mx-auto px-5 md:px-10 py-8 md:py-12 flex flex-col gap-8">
           <Alert variant="info" lang={lang} />

@@ -12,6 +12,7 @@ import { LoadingIndicator } from "@/components/ui/LoadingIndicator"
 import { QuestionCard } from "@/components/ui/QuestionCard"
 import { ProductCard } from "@/components/ui/ProductCard"
 import { type BadgeType } from "@/components/ui/ProductCard"
+import { WhereToBuy } from "@/components/ui/WhereToBuy"
 import { type Lang } from "@/components/ui/LanguagePicker"
 import { DEFAULT_LANG, getSavedLang, saveLang } from "@/lib/language"
 import { PRODUCTS } from "@/lib/products"
@@ -262,6 +263,7 @@ export default function Homepage() {
               <div className="flex justify-end">
                 <QuestionCard
                   question={question}
+                  lang={lang}
                   onEdit={handleEdit}
                 />
               </div>
@@ -348,6 +350,9 @@ export default function Homepage() {
                   {aiResponse.showDisclaimer && (
                     <Alert variant="info" lang={lang} />
                   )}
+
+                  {/* ── Where to buy ───────────────────────────────── */}
+                  <WhereToBuy lang={lang} source="chat" />
 
                 </div>
               )}
