@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Globe, MapPin, Leaf } from "lucide-react"
+import { Globe, MapPin } from "lucide-react"
 import type { Lang } from "@/lib/language"
 import { track } from "@/lib/analytics"
 
@@ -110,12 +110,9 @@ export function WhereToBuy({ lang, source = "chat" }: WhereToBuyProps) {
       <div className="border-t border-border-subtle w-full" />
 
       {/* ── Title ───────────────────────────────────────────────────── */}
-      <div className="flex items-center gap-2">
-        <Leaf size={16} color="#c2986b" aria-hidden="true" />
-        <h2 className="text-h2 font-sans font-medium leading-headline text-text-primary">
-          {t("title")}
-        </h2>
-      </div>
+      <h2 className="text-h2 font-sans font-medium leading-headline text-text-primary">
+        {t("title")}
+      </h2>
 
       {/* ── Online store ────────────────────────────────────────────── */}
       <div className="flex items-start gap-3">

@@ -180,6 +180,25 @@ export const PRODUCTS = [
     imageUrl: 'https://beescare.rs/wp-content/uploads/2021/08/Ulje-slika-3-1-600x600.jpg',
     concerns: ['tanning', 'bronze tan', 'summer skin'],
     category: 'sun'
+  },
+  {
+    id: 'vaginalete',
+    nameSr: 'Kantarion vaginalete',
+    nameEn: "St. John's Wort Vaginal Suppositories",
+    descriptionSr: 'Prirodna intimna nega sa kantarionovim uljem. Antiseptičko, antimikotično i protivupalno dejstvo. Pomažu u održavanju ravnoteže vaginalne flore, smanjuju svrab, sekret i neprijatan miris. Namenjene svim ženama za preventivnu i kurativnu negu.',
+    descriptionEn: "Natural intimate care with St. John's wort oil. Antiseptic, antifungal and anti-inflammatory properties. Help maintain vaginal flora balance, reduce itching, discharge and odor. Suitable for all women for preventive and curative care.",
+    ingredients: ['Kantarionovo ulje (30%)', 'Šea puter', 'Pčelinji vosak', 'Vitamin E'],
+    ingredientsEn: ["St. John's wort oil (30%)", 'Shea butter', 'Beeswax', 'Vitamin E'],
+    url: 'https://beescare.rs/proizvodi/vaginalete/',
+    imageUrl: 'https://beescare.rs/wp-content/uploads/kantarion-vaginalete.jpg',
+    concerns: [
+      'vaginitis', 'vaginal flora', 'intimate care', 'itching intimate',
+      'discharge', 'vaginal dryness', 'menopause', 'antibiotics recovery',
+      'vaginalete', 'intimna nega', 'vaginalna flora', 'svrab intimate',
+      'sekret', 'vaginalna suvoća', 'menopauza', 'kandida', 'candida',
+      'infekcija', 'infection', 'gljivicna infekcija', 'fungal infection',
+    ],
+    category: 'intimate'
   }
 ]
 
