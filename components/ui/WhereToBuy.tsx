@@ -269,6 +269,51 @@ export function WhereToBuy({ lang, source = "chat" }: WhereToBuyProps) {
           {t("cityLabel")}
         </p>
 
+        {/* City dropdown */}
+        <select
+          value={selectedCity}
+          onChange={e => handleCityChange(e.target.value)}
+          className="w-full md:w-auto border border-border-subtle rounded-alert bg-background-default px-3 py-2.5 text-paragraph-s font-sans text-text-primary focus:outline-none focus:border-border-brand transition-colors duration-150 cursor-pointer appearance-none pr-8"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238c8885' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right 12px center",
+          }}
+        >
+          <option value="">{t("dropdownDefault")}</option>
+          {Object.keys(STORES).map(cityKey => (
+            <option key={cityKey} value={cityKey}>
+              {CITY_LABELS[cityKey][lang]}
+            </option>
+          ))}
+        </select>
+
+        {/* City store cards */}
+        {selectedCity && (
+          cityStores.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {cityStores.map((store, i) => (
+                <StoreCard
+                  key={i}
+                  store={store}
+                  openMapsLabel={t("openMaps")}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-paragraph-s font-sans leading-paragraph text-text-muted">
+              {t("noStores")}
+            </p>
+          )
+        )}
+      </div>
+
+      {/* ── Inner divider ───────────────────────────────────────────── */}
+      <div className="border-t border-border-subtle w-full" />
+
+      {/* ── Geolocation ─────────────────────────────────────────────── */}
+      <div className="flex flex-col gap-4">
+
         {/* "Find nearest" button */}
         <button
           type="button"
@@ -308,44 +353,6 @@ export function WhereToBuy({ lang, source = "chat" }: WhereToBuyProps) {
               ))}
             </div>
           </div>
-        )}
-
-        {/* City dropdown */}
-        <select
-          value={selectedCity}
-          onChange={e => handleCityChange(e.target.value)}
-          className="w-full md:w-auto border border-border-subtle rounded-alert bg-background-default px-3 py-2.5 text-paragraph-s font-sans text-text-primary focus:outline-none focus:border-border-brand transition-colors duration-150 cursor-pointer appearance-none pr-8"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238c8885' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "right 12px center",
-          }}
-        >
-          <option value="">{t("dropdownDefault")}</option>
-          {Object.keys(STORES).map(cityKey => (
-            <option key={cityKey} value={cityKey}>
-              {CITY_LABELS[cityKey][lang]}
-            </option>
-          ))}
-        </select>
-
-        {/* City store cards */}
-        {selectedCity && (
-          cityStores.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {cityStores.map((store, i) => (
-                <StoreCard
-                  key={i}
-                  store={store}
-                  openMapsLabel={t("openMaps")}
-                />
-              ))}
-            </div>
-          ) : (
-            <p className="text-paragraph-s font-sans leading-paragraph text-text-muted">
-              {t("noStores")}
-            </p>
-          )
         )}
       </div>
 

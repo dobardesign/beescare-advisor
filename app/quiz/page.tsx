@@ -718,11 +718,11 @@ export default function QuizPage() {
       <main className="flex-1 flex flex-col items-center px-5 md:px-10 py-16 md:py-[100px]">
         <div className="w-full max-w-[748px] flex flex-col gap-8">
 
-          {/* Static header — Figma: eyebrow h4/secondary + H1 h1/primary */}
+          {/* Static header — eyebrow matches homepage "Zdravo!" style */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <HelpCircle size={24} color="#c2986b" aria-hidden="true" />
-              <span className="text-h4 font-sans font-medium leading-headline text-text-secondary whitespace-nowrap">
+              <HelpCircle size={16} color="#c2986b" aria-hidden="true" />
+              <span className="text-label-m font-sans font-medium leading-label text-text-secondary">
                 {t("eyebrow")}
               </span>
             </div>
