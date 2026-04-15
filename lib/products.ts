@@ -190,7 +190,7 @@ export const PRODUCTS = [
     ingredients: ['Kantarionovo ulje (30%)', 'Šea puter', 'Pčelinji vosak', 'Vitamin E'],
     ingredientsEn: ["St. John's wort oil (30%)", 'Shea butter', 'Beeswax', 'Vitamin E'],
     url: 'https://beescare.rs/proizvodi/vaginalete/',
-    imageUrl: 'https://beescare.rs/wp-content/uploads/kantarion-vaginalete.jpg',
+    imageUrl: 'https://beescare.rs/wp-content/uploads/2025/03/Bees-Care-Kantarion-Patrone-Packaging-Design.jpg',
     concerns: [
       'vaginitis', 'vaginal flora', 'intimate care', 'itching intimate',
       'discharge', 'vaginal dryness', 'menopause', 'antibiotics recovery',

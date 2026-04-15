@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, type CSSProperties } from "react"
+import { useState, useEffect, useRef, type CSSProperties } from "react"
 import {
   HelpCircle, ArrowLeft, ArrowRight,
   Sun, Moon, CalendarDays, Leaf,
@@ -588,8 +588,9 @@ export default function QuizPage() {
   const question       = QUIZ_QUESTIONS[currentStep]
   const totalSteps     = QUIZ_QUESTIONS.length
   const selectedAnswer = answers[question?.id]
-  const isLastStep     = currentStep === totalSteps - 1
-  const canGoNext      = !!selectedAnswer
+
+  // Used to prevent double-advance if user taps rapidly
+  const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const t = (key: keyof typeof COPY) => COPY[key][lang]
 
@@ -614,7 +615,44 @@ export default function QuizPage() {
     return () => clearInterval(interval)
   }, [isLoading, lang])
 
+  // ── Scroll to top on every step change ────────────────────────────────────
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    scrollToTop()
+  }, [currentStep])
+
   // ── Handlers ──────────────────────────────────────────────────────────────
+
+  async function submitQuiz(finalAnswers: QuizAnswers) {
+    track("quiz_submitted", { lang, answers: finalAnswers })
+    setIsLoading(true)
+    setError(false)
+    try {
+      const res = await fetch("/api/quiz", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answers: finalAnswers, lang }),
+      })
+      if (!res.ok) throw new Error("API error")
+      const data: QuizApiResult = await res.json()
+      setResult(data)
+      track("quiz_completed", {
+        lang,
+        skin_type: finalAnswers.skin_type,
+        primary_concern: finalAnswers.primary_concern,
+        products_count: data.recommendations?.primaryProducts?.length ?? 0,
+      })
+    } catch {
+      setError(true)
+      track("quiz_error", { lang, error: "api_failed" })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   function handleSelect(value: string) {
     // Fire quiz_started exactly once — when the very first answer is chosen
@@ -627,41 +665,25 @@ export default function QuizPage() {
       answer: value,
       lang,
     })
-    setAnswers(prev => ({ ...prev, [question.id]: value }))
+
+    const nextAnswers = { ...answers, [question.id]: value }
+    setAnswers(nextAnswers)
+
+    // Clear any pending advance from a previous rapid tap
+    if (advanceTimer.current) clearTimeout(advanceTimer.current)
+
+    // Auto-advance after 300ms — enough to see the selected state
+    advanceTimer.current = setTimeout(() => {
+      if (currentStep < totalSteps - 1) {
+        setCurrentStep(s => s + 1)
+      } else {
+        submitQuiz(nextAnswers)
+      }
+    }, 300)
   }
 
   function handlePrevious() {
     if (currentStep > 0) setCurrentStep(s => s - 1)
-  }
-
-  async function handleNext() {
-    if (!canGoNext) return
-    if (currentStep < totalSteps - 1) { setCurrentStep(s => s + 1); return }
-
-    track("quiz_submitted", { lang, answers })
-    setIsLoading(true)
-    setError(false)
-    try {
-      const res = await fetch("/api/quiz", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers, lang }),
-      })
-      if (!res.ok) throw new Error("API error")
-      const data: QuizApiResult = await res.json()
-      setResult(data)
-      track("quiz_completed", {
-        lang,
-        skin_type: answers.skin_type,
-        primary_concern: answers.primary_concern,
-        products_count: data.recommendations?.primaryProducts?.length ?? 0,
-      })
-    } catch {
-      setError(true)
-      track("quiz_error", { lang, error: "api_failed" })
-    } finally {
-      setIsLoading(false)
-    }
   }
 
   function handleRestart() {
@@ -775,8 +797,8 @@ export default function QuizPage() {
               {/* Figma: subtle divider above nav row */}
               <div className="border-t border-border-subtle w-full" />
 
-              {/* Mobile: stacked (next on top via flex-col-reverse). Desktop: side-by-side */}
-              <div className="flex flex-col-reverse gap-3 md:flex-row md:justify-between">
+              {/* Only the Previous button — Next is replaced by auto-advance */}
+              <div className="flex justify-start">
                 <Button
                   variant="outlined"
                   size="default"
@@ -786,16 +808,6 @@ export default function QuizPage() {
                   onClick={handlePrevious}
                 >
                   {t("previous")}
-                </Button>
-                <Button
-                  variant="primary"
-                  size="default"
-                  iconRight={<ArrowRight size={16} aria-hidden="true" />}
-                  disabled={!canGoNext}
-                  className="w-full md:w-auto"
-                  onClick={handleNext}
-                >
-                  {isLastStep ? t("seeResults") : t("next")}
                 </Button>
               </div>
             </>
