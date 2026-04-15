@@ -4,7 +4,13 @@ const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY || ""
 
 export function initAnalytics() {
   if (typeof window === "undefined") return
-  if (!POSTHOG_KEY) return
+
+  if (!POSTHOG_KEY) {
+    console.warn("PostHog key missing — analytics disabled")
+    return
+  }
+
+  console.log("PostHog initializing with key:", POSTHOG_KEY.slice(0, 10) + "...")
 
   posthog.init(POSTHOG_KEY, {
     api_host: "https://eu.i.posthog.com",

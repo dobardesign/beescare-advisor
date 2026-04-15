@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Sora } from "next/font/google";
 import "./globals.css";
-import { AnalyticsProvider } from "@/components/AnalyticsProvider";
+import { Providers } from "./providers";
 
 /**
  * Geist — loaded as a fallback / code utility font.
@@ -47,9 +47,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${sora.variable} h-full`}
     >
       <body className="min-h-full flex flex-col antialiased">
-        <AnalyticsProvider>
+        <Providers>
           {children}
-        </AnalyticsProvider>
+        </Providers>
       </body>
     </html>
   );
